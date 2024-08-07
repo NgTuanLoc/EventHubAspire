@@ -11,7 +11,12 @@
 
 	<ItemGroup>
 		<PackageReference Include="Aspire.Hosting.Azure.EventHubs" Version="8.1.0" />
-		<PackageReference Include="Aspire.Hosting.AppHost" Version="8.0.0" />
+		<PackageReference Include="Aspire.Hosting.AppHost" Version="8.1.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Consumer\Consumer.csproj" />
+		<ProjectReference Include="..\Publisher\Publisher.csproj" />
 	</ItemGroup>
 
 </Project>
