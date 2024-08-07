@@ -28,6 +28,8 @@ public static class EventHubExtensions
         services.AddScoped(service =>
         {
             var option = service.GetService<IOptions<StorageSettings>>()!.Value;
+            var blobService = new BlobServiceClient(connectionString);
+            blobService.CreateBlobContainer(option.ContainerName);
             return new BlobContainerClient(connectionString, option.ContainerName);
         });
         return services;
