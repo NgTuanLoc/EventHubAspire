@@ -29,7 +29,17 @@ public static class EventHubExtensions
         {
             var option = service.GetService<IOptions<StorageSettings>>()!.Value;
             var blobService = new BlobServiceClient(connectionString);
-            blobService.CreateBlobContainer(option.ContainerName);
+
+            //get a BlobContainerClient
+            var container = blobService.GetBlobContainerClient(option.ContainerName);
+
+            //you can check if the container exists or not, then determine to create it or not
+            bool isExist = container.Exists();
+            if (!isExist)
+            {
+                container.Create();
+            }
+
             return new BlobContainerClient(connectionString, option.ContainerName);
         });
         return services;
