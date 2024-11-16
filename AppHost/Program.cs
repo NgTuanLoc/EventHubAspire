@@ -7,19 +7,13 @@ var eventHubs = builder.AddAzureEventHubs("azureeventhub")
 
 var blobs = builder.AddAzureStorage("storage")
                         .RunAsEmulator()
-                        .WithAnnotation(new ContainerImageAnnotation
-                        {
-                            Registry = "mcr.microsoft.com",
-                            Image = "azure-storage/azurite",
-                            Tag = "3.31.0"
-                        })
                         .AddBlobs("blobs");
 
 builder.AddProject<Projects.Publisher>("publisher")
-        .WithReference(eventHubs);
+        .WithReference(eventHubs).WaitFor(eventHubs);
 
 builder.AddProject<Projects.Consumer>("consumer")
-        .WithReference(eventHubs)
-        .WithReference(blobs);
+        .WithReference(eventHubs).WaitFor(eventHubs)
+        .WithReference(blobs).WaitFor(blobs);
 
 await builder.Build().RunAsync();

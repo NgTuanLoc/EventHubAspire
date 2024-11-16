@@ -10,6 +10,7 @@ using Microsoft.Extensions.Azure;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.AddAzureBlobClient("blobs");
 builder.Services.AddEventHubEventProcessorClientService(builder.Configuration.GetConnectionString("azureeventhub") ?? "");
 builder.Services.AddStorageClientService(builder.Configuration.GetConnectionString("blobs") ?? "");
 builder.Services.Configure<EventHubSettings>(builder.Configuration.GetSection("EventHub"));

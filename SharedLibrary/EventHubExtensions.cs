@@ -27,7 +27,9 @@ public static class EventHubExtensions
     {
         services.AddScoped(service =>
         {
+            var blobClient = service.GetRequiredService<BlobServiceClient>();
             var option = service.GetService<IOptions<StorageSettings>>()!.Value;
+            blobClient.CreateBlobContainer(option.ContainerName);
             return new BlobContainerClient(connectionString, option.ContainerName);
         });
         return services;
@@ -38,7 +40,6 @@ public static class EventHubExtensions
         services.AddScoped(service =>
         {
             var storageClient = service.GetService<BlobContainerClient>();
-
             var option = service.GetService<IOptions<EventHubSettings>>()!.Value;
 
             return new EventProcessorClient(storageClient, option.ConsumerGroup, connectionString, option.HubName);
